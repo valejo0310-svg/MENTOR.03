@@ -18,6 +18,7 @@ services:
       timeout: 5s
       retries: 10
 
+
   api:
     build: ./server
     container_name: mentor-api
@@ -42,6 +43,7 @@ services:
       db:
         condition: service_healthy
 
+
   client:
     build: ./client
     container_name: mentor-client
@@ -55,6 +57,7 @@ services:
     depends_on:
       - api
 
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: mentor-pgadmin
@@ -67,6 +70,7 @@ services:
       - db
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+
 
 volumes:
   postgres_data:
