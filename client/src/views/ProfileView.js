@@ -1,9 +1,13 @@
+// Renders the profile screen and the personal goals experience for the user.
+// Renderiza la pantalla de perfil y la experiencia de metas personales del usuario.
 export class ProfileView {
   constructor(root) {
     this.root = root;
   }
 
   render({ user, clans }) {
+    // Builds the profile form and the goals section with the current user data.
+    // Construye el formulario de perfil y la sección de metas con los datos actuales del usuario.
     const dashboardRoute = user.role === "CODER" ? "#/coder" : "#/mentor";
 
     this.root.innerHTML = `
@@ -180,6 +184,8 @@ export class ProfileView {
   }
 
   bindEvents({ onSave, onLogout }) {
+    // Wires the profile form and logout button to the controller callbacks.
+    // Conecta el formulario de perfil y el botón de logout con los callbacks del controlador.
     this.root.querySelector("#profile-form").addEventListener("submit", (event) => {
       event.preventDefault();
 

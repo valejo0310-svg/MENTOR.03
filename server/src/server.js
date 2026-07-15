@@ -4,6 +4,8 @@ import { testDatabaseConnection } from "./db.js";
 
 const port = Number(process.env.API_PORT || 3000);
 
+// Starts the API server after validating the database connection.
+// Inicia el servidor API después de validar la conexión a la base de datos.
 async function startServer() {
   try {
     await testDatabaseConnection();

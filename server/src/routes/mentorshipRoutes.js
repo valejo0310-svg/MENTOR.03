@@ -10,6 +10,8 @@ import {
   requireRole
 } from "../middleware/authMiddleware.js";
 
+// Defines the mentorship request routes for coders and mentors.
+// Define las rutas de solicitudes de mentoría para coders y mentors.
 export const mentorshipRouter = Router();
 
 mentorshipRouter.get("/", authenticate, listMentorships);

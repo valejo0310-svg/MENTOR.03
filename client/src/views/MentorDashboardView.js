@@ -10,12 +10,16 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
+// Renders the mentor dashboard for reviewing and managing mentorship requests.
+// Renderiza el dashboard del mentor para revisar y gestionar solicitudes de mentoría.
 export class MentorDashboardView {
   constructor(root) {
     this.root = root;
   }
 
   render(user) {
+    // Builds the mentor interface for accepting, rejecting, and completing requests.
+    // Construye la interfaz del mentor para aceptar, rechazar y completar solicitudes.
     this.root.innerHTML = `
       <div class="dashboard-layout">
         <aside class="sidebar">
@@ -64,6 +68,8 @@ export class MentorDashboardView {
   }
 
   bindEvents({ onStatusChange, onLogout }) {
+    // Connects mentor actions such as accept, reject, and complete to the controller.
+    // Conecta las acciones del mentor como aceptar, rechazar y completar con el controlador.
     this.root.querySelector("#request-list").addEventListener("click", (event) => {
       const button = event.target.closest("[data-status]");
 

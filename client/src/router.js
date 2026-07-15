@@ -6,6 +6,8 @@ import { AuthController } from "./controllers/AuthController.js";
 import { MentorshipController } from "./controllers/MentorshipController.js";
 import { ProfileController } from "./controllers/ProfileController.js";
 
+// Manages navigation between auth, coder, mentor, and profile screens.
+// Gestiona la navegación entre pantallas de autenticación, coder, mentor y perfil.
 export class AppRouter {
   constructor({ root, api }) {
     this.root = root;
@@ -14,6 +16,8 @@ export class AppRouter {
   }
 
   start() {
+    // Reacts to hash changes and renders the matching screen.
+    // Responde a cambios de hash y renderiza la pantalla correspondiente.
     window.addEventListener("hashchange", () => this.render());
 
     if (!window.location.hash) {

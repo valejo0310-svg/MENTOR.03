@@ -1,3 +1,5 @@
+// Coordinates mentorship request operations for coders and mentors.
+// Coordina las operaciones de solicitudes de mentoría para coders y mentors.
 export class MentorshipController {
   constructor({ api, router, view, user }) {
     this.api = api;
@@ -21,6 +23,8 @@ export class MentorshipController {
   }
 
   async loadRequests() {
+    // Fetches the current list of mentorship requests from the backend.
+    // Obtiene la lista actual de solicitudes de mentoría desde el backend.
     try {
       const response = await this.api.get("/mentorships");
       this.requests = response.data;

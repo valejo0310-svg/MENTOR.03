@@ -1,5 +1,7 @@
 import { pool } from "../db.js";
 
+// Maps database rows into the response shape used by the frontend.
+// Convierte filas de base de datos al formato de respuesta usado por el frontend.
 function mapUser(user) {
   return {
     id: user.id,

@@ -1,5 +1,7 @@
 import { pool } from "../db.js";
 
+// Maps mentorship records into a frontend-friendly structure.
+// Convierte los registros de mentoría a una estructura amigable para el frontend.
 function mapRequest(row) {
   return {
     id: row.id,

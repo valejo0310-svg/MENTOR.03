@@ -2,6 +2,8 @@ import pg from "pg";
 
 const { Pool } = pg;
 
+// Configures the PostgreSQL connection pool used by the application.
+// Configura el pool de conexión a PostgreSQL usado por la aplicación.
 export const pool = new Pool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),

@@ -12,6 +12,8 @@ import {
   deleteGoal
 } from "../controllers/userController.js";
 
+// Defines routes for profile data, clans, and personal goals.
+// Define rutas para datos de perfil, clanes y metas personales.
 export const userRouter = Router();
 
 userRouter.get("/clans", getClans);

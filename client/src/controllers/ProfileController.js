@@ -1,3 +1,5 @@
+// Manages profile updates and personal goals for the authenticated user.
+// Maneja actualizaciones de perfil y metas personales del usuario autenticado.
 export class ProfileController {
   constructor({ api, router, view, user }) {
     this.api = api;
@@ -7,6 +9,8 @@ export class ProfileController {
   }
 
   async init() {
+    // Loads the profile data and the goals associated with the active user.
+    // Carga los datos del perfil y las metas asociadas al usuario activo.
     try {
       const [profileResponse, clansResponse] = await Promise.all([
         this.api.get("/users/me"),
