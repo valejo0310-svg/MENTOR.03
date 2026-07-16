@@ -32,19 +32,16 @@ export class ProfileController {
       this.router.navigate("/login");
     }
     this.view.bindGoalEvents({
-  onCreate: (data) => this.createGoal(data),
+      onCreate: (data) => this.createGoal(data),
+      onEdit: (goalId, data) => this.editGoal(goalId, data),
+      onToggle: (goalId, completed) => this.toggleGoal(goalId, completed),
+      onDelete: (goalId) => this.deleteGoal(goalId)
+    });
 
-  onToggle: (goalId, completed) =>
-    this.toggleGoal(goalId, completed),
-
-  onDelete: (goalId) =>
-    this.deleteGoal(goalId)
-});
-
-await this.loadGoals();
+    await this.loadGoals();
   }
-  
-async loadGoals() {
+
+  async loadGoals() {
   try {
     const response =
       await this.api.get("/users/me/goals");
@@ -71,28 +68,52 @@ async loadGoals() {
     }
   }
   async createGoal(data) {
-  try {
-    await this.api.post(
-      "/users/me/goals",
-      data
-    );
+    try {
+      await this.api.post(
+        "/users/me/goals",
+        data
+      );
 
-    this.view.clearGoalForm();
+      this.view.clearGoalForm();
 
-    this.view.showGoalMessage(
-      "Goal created successfully.",
-      "success"
-    );
+      this.view.showGoalMessage(
+        "Goal created successfully.",
+        "success"
+      );
 
-    await this.loadGoals();
-  } catch (error) {
-    this.view.showGoalMessage(
-      error.message,
-      "error"
-    );
+      await this.loadGoals();
+    } catch (error) {
+      this.view.showGoalMessage(
+        error.message,
+        "error"
+      );
+    }
   }
-}
-async toggleGoal(goalId, completed) {
+
+  async editGoal(goalId, data) {
+    try {
+      await this.api.patch(
+        `/users/me/goals/${goalId}`,
+        data
+      );
+
+      this.view.clearGoalForm();
+
+      this.view.showGoalMessage(
+        "Goal updated successfully.",
+        "success"
+      );
+
+      await this.loadGoals();
+    } catch (error) {
+      this.view.showGoalMessage(
+        error.message,
+        "error"
+      );
+    }
+  }
+
+  async toggleGoal(goalId, completed) {
   try {
     await this.api.patch(
       `/users/me/goals/${goalId}`,

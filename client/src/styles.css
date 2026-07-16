@@ -337,6 +337,10 @@ textarea.form-input {
   margin: 6px 0 0;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .message {
   margin-bottom: 20px;
   padding: 13px 16px;
@@ -744,6 +748,29 @@ textarea.form-input {
   max-width: 280px;
 }
 
+.goal-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid #cfd8e8;
+  border-radius: 10px;
+  color: #31415a;
+  background: #f8faff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  background: #eef3ff;
+}
+
 .goal-form .primary-button {
   width: auto;
   min-width: 180px;
@@ -832,19 +859,39 @@ textarea.form-input {
   overflow-wrap: anywhere;
 }
 
+.goal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.goal-edit-button,
 .goal-delete-button {
   padding: 7px 10px;
   border: 1px solid transparent;
   border-radius: 8px;
-
-  color: #b42318;
-  background: transparent;
   font-weight: 700;
   cursor: pointer;
 
   transition:
     border-color 150ms ease,
     background 150ms ease;
+}
+
+.goal-edit-button {
+  color: #204fc4;
+  background: transparent;
+}
+
+.goal-edit-button:hover {
+  border-color: #c7d3f6;
+  background: #f2f6ff;
+}
+
+.goal-delete-button {
+  color: #b42318;
+  background: transparent;
 }
 
 .goal-delete-button:hover {
@@ -892,7 +939,7 @@ textarea.form-input {
     grid-template-columns: auto minmax(0, 1fr);
   }
 
-  .goal-delete-button {
+  .goal-actions {
     grid-column: 2;
     justify-self: start;
   }

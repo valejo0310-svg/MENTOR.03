@@ -13,7 +13,7 @@ export class AuthView {
         <div class="auth-card">
           <aside class="auth-brand">
             <div>
-              <p class="eyebrow">PROJECT INTEGRATOR</p>
+             
               <h1>MENTOR</h1>
               <p>
                 A simple platform where Coders request academic support and

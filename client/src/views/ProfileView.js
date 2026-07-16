@@ -125,6 +125,8 @@ export class ProfileView {
   </div>
 
   <form id="goal-form" class="goal-form">
+    <input id="goal-edit-id" type="hidden" value="" />
+
     <div class="form-group">
       <label for="goal-title">Goal title</label>
 
@@ -160,13 +162,23 @@ export class ProfileView {
       />
     </div>
 
-    <button
-      id="goal-submit-button"
-      class="primary-button"
-      type="submit"
-    >
-      Add goal
-    </button>
+    <div class="goal-form-actions">
+      <button
+        id="goal-submit-button"
+        class="primary-button"
+        type="submit"
+      >
+        Add goal
+      </button>
+
+      <button
+        id="goal-cancel-button"
+        class="secondary-button hidden"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
   </form>
 
   <p
@@ -218,88 +230,126 @@ export class ProfileView {
       dueDate: this.root.querySelector("#goal-due-date").value
     };
   }
-  clearGoalForm() {
-  document
-    .getElementById("goal-form")
-    .reset();
-}
-renderGoals(goals) {
-  const goalsList =
-    document.getElementById("goals-list");
 
-  if (!goals.length) {
-    goalsList.innerHTML = `
-      <div class="empty-state">
-        <p>You do not have personal goals yet.</p>
-      </div>
-    `;
-
-    return;
+  getEditingGoalId() {
+    const editingGoalId = this.root.querySelector("#goal-edit-id").value;
+    return editingGoalId ? Number(editingGoalId) : null;
   }
 
-  goalsList.innerHTML = goals
-    .map((goal) => {
-      const dueDate = new Date(
-        `${goal.due_date}T00:00:00`
-      );
+  clearGoalForm() {
+    const form = this.root.querySelector("#goal-form");
+    form.reset();
+    this.root.querySelector("#goal-edit-id").value = "";
+    this.root.querySelector("#goal-submit-button").textContent = "Add goal";
+    this.root.querySelector("#goal-cancel-button").classList.add("hidden");
+  }
 
-      const formattedDate =
-        dueDate.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric"
-        });
+  populateGoalForm(goal) {
+    this.root.querySelector("#goal-edit-id").value = goal.id;
+    this.root.querySelector("#goal-title").value = goal.title;
+    this.root.querySelector("#goal-description").value = goal.description;
+    this.root.querySelector("#goal-due-date").value = goal.dueDate;
+    this.root.querySelector("#goal-submit-button").textContent = "Save changes";
+    this.root.querySelector("#goal-cancel-button").classList.remove("hidden");
+  }
 
-      return `
-        <article
-          class="goal-item ${
-            goal.completed
-              ? "goal-completed"
-              : ""
-          }"
-        >
-          <label class="goal-check">
-            <input
-              class="goal-checkbox"
-              type="checkbox"
-              data-goal-id="${goal.id}"
-              ${goal.completed ? "checked" : ""}
-            />
+  renderGoals(goals) {
+    const goalsList = this.root.querySelector("#goals-list");
 
-            <span class="goal-checkmark"></span>
-          </label>
+    if (!goals.length) {
+      goalsList.innerHTML = `
+        <div class="empty-state">
+          <p>You do not have personal goals yet.</p>
+        </div>
+      `;
 
-          <div class="goal-content">
-            <div class="goal-title-row">
-              <h3>${this.escapeHtml(goal.title)}</h3>
+      return;
+    }
 
-              <time datetime="${goal.due_date}">
-                ${formattedDate}
-              </time>
+    goalsList.innerHTML = goals
+      .map((goal) => {
+        const dueDate = new Date(
+          `${goal.due_date}T00:00:00`
+        );
+
+        const formattedDate =
+          dueDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          });
+
+        return `
+          <article
+            class="goal-item ${
+              goal.completed
+                ? "goal-completed"
+                : ""
+            }"
+            data-goal-id="${goal.id}"
+            data-title="${this.escapeAttribute(goal.title)}"
+            data-description="${this.escapeAttribute(goal.description || "")}" 
+            data-due-date="${goal.due_date || ""}"
+          >
+            <label class="goal-check">
+              <input
+                class="goal-checkbox"
+                type="checkbox"
+                data-goal-id="${goal.id}"
+                ${goal.completed ? "checked" : ""}
+              />
+
+              <span class="goal-checkmark"></span>
+            </label>
+
+            <div class="goal-content">
+              <div class="goal-title-row">
+                <h3>${this.escapeHtml(goal.title)}</h3>
+
+                <time datetime="${goal.due_date}">
+                  ${formattedDate}
+                </time>
+              </div>
+
+              <p>
+                ${
+                  this.escapeHtml(goal.description) ||
+                  "No description"
+                }
+              </p>
             </div>
 
-            <p>
-              ${
-                this.escapeHtml(goal.description) ||
-                "No description"
-              }
-            </p>
-          </div>
+            <div class="goal-actions">
+              <button
+                class="goal-edit-button"
+                type="button"
+                data-goal-id="${goal.id}"
+              >
+                Edit
+              </button>
 
-          <button
-            class="goal-delete-button"
-            type="button"
-            data-goal-id="${goal.id}"
-            aria-label="Delete goal"
-          >
-            Delete
-          </button>
-        </article>
-      `;
-    })
-    .join("");
-}
-escapeHtml(value = "") {
+              <button
+                class="goal-delete-button"
+                type="button"
+                data-goal-id="${goal.id}"
+                aria-label="Delete goal"
+              >
+                Delete
+              </button>
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  escapeAttribute(value = "") {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll('"', "&quot;");
+  }
+
+  escapeHtml(value = "") {
   return String(value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -318,19 +368,29 @@ showGoalMessage(message, type = "success") {
 }
 bindGoalEvents({
   onCreate,
+  onEdit,
   onToggle,
   onDelete
 }) {
-  const form =
-    document.getElementById("goal-form");
-
-  const goalsList =
-    document.getElementById("goals-list");
+  const form = this.root.querySelector("#goal-form");
+  const goalsList = this.root.querySelector("#goals-list");
+  const cancelButton = this.root.querySelector("#goal-cancel-button");
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    const editingGoalId = this.getEditingGoalId();
+
+    if (editingGoalId) {
+      await onEdit(editingGoalId, this.getGoalData());
+      return;
+    }
+
     await onCreate(this.getGoalData());
+  });
+
+  cancelButton.addEventListener("click", () => {
+    this.clearGoalForm();
   });
 
   goalsList.addEventListener(
@@ -353,6 +413,21 @@ bindGoalEvents({
   goalsList.addEventListener(
     "click",
     async (event) => {
+      const editButton = event.target.closest(".goal-edit-button");
+
+      if (editButton) {
+        const goalItem = editButton.closest(".goal-item");
+
+        this.populateGoalForm({
+          id: Number(editButton.dataset.goalId),
+          title: goalItem.dataset.title || "",
+          description: goalItem.dataset.description || "",
+          dueDate: goalItem.dataset.dueDate || ""
+        });
+
+        return;
+      }
+
       const deleteButton =
         event.target.closest(
           ".goal-delete-button"
