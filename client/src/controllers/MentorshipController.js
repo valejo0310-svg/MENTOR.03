@@ -103,6 +103,12 @@ export class MentorshipController {
   }
 
   async logout() {
+    const confirmed = window.confirm(
+      "¿Estás seguro de que deseas cerrar sesión?"
+    );
+
+    if (!confirmed) return;
+
     try {
       await this.api.post("/auth/logout");
     } finally {
