@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { app } from "./app.js";
-import { testDatabaseConnection } from "./db.js";
+import { ensureDefaultAdminUser, testDatabaseConnection } from "./db.js";
 
 const port = Number(process.env.API_PORT || 3000);
 
@@ -9,6 +9,7 @@ const port = Number(process.env.API_PORT || 3000);
 async function startServer() {
   try {
     await testDatabaseConnection();
+    await ensureDefaultAdminUser();
 
     app.listen(port, "0.0.0.0", () => {
       console.log(`API running on http://localhost:${port}`);

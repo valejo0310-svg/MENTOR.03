@@ -5,7 +5,7 @@ import { pool } from "./db.js";
 import { authRouter } from "./routes/authRoutes.js";
 import { userRouter } from "./routes/userRoutes.js";
 import { mentorshipRouter } from "./routes/mentorshipRoutes.js";
-
+import {adminRouter} from "./routes/adminRoutes.js";
 // Creates the Express application and registers the main API routes.
 // Crea la aplicación Express y registra las rutas principales de la API.
 export const app = express();
@@ -35,6 +35,7 @@ app.get("/api/health", async (_request, response) => {
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/mentorships", mentorshipRouter);
+app.use("/api/admin", adminRouter);
 
 app.use((_request, response) => {
   response.status(404).json({
