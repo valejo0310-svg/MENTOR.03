@@ -1,3 +1,5 @@
+// Handles login and registration flows by connecting the auth view to the API.
+// Maneja los flujos de login y registro conectando la vista de autenticación con la API.
 export class AuthController {
   constructor({ api, router, view, initialTab }) {
     this.api = api;
@@ -7,7 +9,8 @@ export class AuthController {
   }
 
   async init() {
-   
+    // Loads the available clans and renders the initial auth screen.
+    // Carga los clanes disponibles y renderiza la pantalla inicial de autenticación.
     try {
       const response = await this.api.get("/users/clans");
 

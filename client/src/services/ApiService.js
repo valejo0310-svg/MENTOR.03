@@ -1,3 +1,5 @@
+// Centralizes HTTP requests and keeps the client connected to the backend API.
+// Centraliza las peticiones HTTP y mantiene al cliente conectado con la API del backend.
 export class ApiService {
   constructor(baseUrl = "/api") {
     this.baseUrl = baseUrl;
