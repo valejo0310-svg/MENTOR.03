@@ -65,30 +65,3 @@ WHERE coder.email = 'coder@mentor.test'
     WHERE request.coder_id = coder.id
       AND request.topic = 'JavaScript Vanilla'
   );
-  
-  INSERT INTO users (
-  clan_id,
-  first_name,
-  last_name,
-  email,
-  password_hash,
-  role,
-  biography
-)
-VALUES (
-  NULL,
-  'System',
-  'Administrator',
-  'admin@mentor.test',
-  crypt(
-    '123456',
-    gen_salt('bf', 10)
-  ),
-  'ADMIN',
-  'Administrator account for reviewing users and mentorship requests.'
-)
-ON CONFLICT (email) DO UPDATE
-SET
-  role = 'ADMIN',
-  clan_id = NULL,
-  updated_at = CURRENT_TIMESTAMP;

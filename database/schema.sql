@@ -18,10 +18,10 @@ CREATE TABLE users (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
   CONSTRAINT valid_user_role
-    CHECK (role IN ('CODER', 'MENTOR','ADMIN')),
+    CHECK (role IN ('CODER', 'MENTOR')),
 
-    CONSTRAINT coder_requires_clan
-    CHECK (role <> 'CODER' OR clan_id IS NOT NULL)
+  CONSTRAINT coder_requires_clan
+    CHECK (role = 'MENTOR' OR clan_id IS NOT NULL)
 );
 
 CREATE TABLE mentorship_requests (
