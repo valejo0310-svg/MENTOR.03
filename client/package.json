@@ -10,8 +10,5 @@
   },
   "devDependencies": {
     "vite": "^6.1.0"
-  },
-  "dependencies": {
-    "sweetalert2": "^11.26.25"
   }
 }

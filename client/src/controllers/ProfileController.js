@@ -1,5 +1,3 @@
-import { confirmAction, toast } from "../utils/alerts.js";
-
 // Manages profile updates and personal goals for the authenticated user.
 // Maneja actualizaciones de perfil y metas personales del usuario autenticado.
 export class ProfileController {
@@ -63,10 +61,8 @@ export class ProfileController {
       const response = await this.api.put("/users/me", data);
       this.user = response.data;
       this.view.showMessage(response.message);
-      toast(response.message || "Profile updated successfully.", "success");
     } catch (error) {
       this.view.showMessage(error.message, "error");
-      toast(error.message, "error");
     } finally {
       this.view.setLoading(false);
     }
@@ -85,16 +81,12 @@ export class ProfileController {
         "success"
       );
 
-      toast("Goal created successfully.", "success");
-
       await this.loadGoals();
     } catch (error) {
       this.view.showGoalMessage(
         error.message,
         "error"
       );
-
-      toast(error.message, "error");
     }
   }
 
@@ -112,16 +104,12 @@ export class ProfileController {
         "success"
       );
 
-      toast("Goal updated successfully.", "success");
-
       await this.loadGoals();
     } catch (error) {
       this.view.showGoalMessage(
         error.message,
         "error"
       );
-
-      toast(error.message, "error");
     }
   }
 
@@ -153,33 +141,25 @@ async deleteGoal(goalId) {
       "success"
     );
 
-    toast("Goal deleted successfully.", "success");
-
     await this.loadGoals();
   } catch (error) {
     this.view.showGoalMessage(
       error.message,
       "error"
     );
-
-    toast(error.message, "error");
   }
 }
 
   async logout() {
-    const confirmed = await confirmAction({
-      title: "Log out?",
-      text: "You will need to sign in again to access your profile.",
-      confirmButtonText: "Yes, log out",
-      danger: true
-    });
+    const confirmed = window.confirm(
+      "¿Estás seguro de que deseas cerrar sesión?"
+    );
 
     if (!confirmed) return;
 
     try {
       await this.api.post("/auth/logout");
     } finally {
-      toast("You have been logged out.", "success");
       this.router.navigate("/login");
     }
   }
